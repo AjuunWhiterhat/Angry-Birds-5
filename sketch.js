@@ -4,9 +4,10 @@ const Bodies = Matter.Bodies;
 const Constraint = Matter.Constraint;
 
 var engine, world;
-var box1, pig1;
+var box1, pig1,pig2;
 var backgroundImg,platform;
 var bird, slingShot;
+var score;
 
 function preload() {
     backgroundImg = loadImage("sprites/bg.png");
@@ -17,6 +18,7 @@ function setup(){
     engine = Engine.create();
     world = engine.world;
 
+    score = 0;
 
     ground = new Ground(600,height,1200,20);
     platform = new Ground(150, 305, 300, 170);
@@ -28,7 +30,7 @@ function setup(){
 
     box3 = new Box(700,240,70,70);
     box4 = new Box(920,240,70,70);
-    pig3 = new Pig(810, 220);
+    pig2 = new Pig(810, 220);
 
     log3 =  new Log(810,180,300, PI/2);
 
@@ -38,6 +40,7 @@ function setup(){
 
     bird = new Bird(200,50);
 
+
     //log6 = new Log(230,180,80, PI/2);
     slingshot = new SlingShot(bird.body,{x:200, y:50});
 }
@@ -46,6 +49,8 @@ function draw(){
     background(backgroundImg);
     Engine.update(engine);
     //strokeWeight(4);
+    textSize(16);
+    text("score : "+score,width-100,50);
     box1.display();
     box2.display();
     ground.display();
@@ -54,7 +59,7 @@ function draw(){
 
     box3.display();
     box4.display();
-    pig3.display();
+    pig2.display();
     log3.display();
 
     box5.display();
@@ -64,7 +69,16 @@ function draw(){
     bird.display();
     platform.display();
     //log6.display();
-    slingshot.display();    
+    slingshot.display(); 
+    pig1.score();
+    pig2.score();
+}
+
+function keyPressed(){
+    if(keyCode===32){
+        Matter.Body.setPosition(bird.body,{x:200,y:50});
+        slingshot.attach(bird.body);
+    }
 }
 
 function mouseDragged(){
